@@ -1,25 +1,46 @@
-# JEE - An example project for begginers
+# JPA - Basic concepts
 
-If you want generate the project yourself, execute this command in terminal (You need have installed maven of course):
+## Table info
+@Entity
+@Table
+
+## PK info
+@Id
+@GeneratedValue
+
+## Column info
+@Column
+
+## Relations info
+@OneToMany
+@ManyToOne
+
+Change to demo dir:
+cd /path/.../demo
 
 <pre>
-mvn archetype:generate -DarchetypeGroupId=org.jboss.spec.archetypes -DarchetypeArtifactId=jboss-javaee6-webapp-ear-blank-archetype
+mvn clean
+mvn install
+
+cp ear/target/demo-ear.ear /path/to/jboss-as-7.1.1.Final/standalone/deployments/
+
+JBOSS_HOME: /path/to/jboss-as-7.1.1.Final/
 </pre>
 
-And answer the questions like this:
+To visualize the tables, JBOSS_HOME/standalone/deployments has the h2console.war
 
-<pre>
-rene@rene-pc:~/Documents/rene/jee$ mvn archetype:generate -DarchetypeGroupId=org.jboss.spec.archetypes -DarchetypeArtifactId=jboss-javaee6-webapp-ear-blank-archetype
-...
-Define value for property 'groupId': : com.github
-Define value for property 'artifactId': : demo
-Define value for property 'version':  1.0-SNAPSHOT: : 1.0
-Define value for property 'package':  com.github: : com.github.demo
-...
-jboss-bom-enterprise-version: 1.0.4.Final-redhat-4
-Y: : y
-[INFO] ----------------------------------------------------------------------------
-[INFO] Using following parameters for creating project from Archetype: jboss-javaee6-webapp-ear-blank-archetype:7.1.3.Final
-...
-</pre>
+To run JBoss AS
+sh JBOSS_HOME/bin/standalone.sh
 
+login to database console:
+http://localhost:8080/h2console/
+
+Driver Class: 	org.h2.Driver
+JDBC URL:	jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+User Name:	sa
+Password:	sa
+
+Then you can see the tables:
+-HIBERNATE_SEQUENCES 	(To generate PKs)
+-TBL_DEPARTMENT 	
+-TBL_EMPLOYEE 		(FK with TBL_DEPARTMENT)
