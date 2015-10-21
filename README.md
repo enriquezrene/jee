@@ -44,3 +44,12 @@ Then you can see the tables:
 -HIBERNATE_SEQUENCES 	(To generate PKs)
 -TBL_DEPARTMENT 	
 -TBL_EMPLOYEE 		(FK with TBL_DEPARTMENT)
+
+
+Artifact to avoid write dummy code:
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.6</version>
+		</dependency>
