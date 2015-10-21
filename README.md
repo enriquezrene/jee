@@ -2,7 +2,9 @@
 
 If you want generate the project yourself, execute this command in terminal (You need have installed maven of course):
 
+<pre>
 mvn archetype:generate -DarchetypeGroupId=org.jboss.spec.archetypes -DarchetypeArtifactId=jboss-javaee6-webapp-ear-blank-archetype
+</pre>
 
 And answer the questions like this:
 
