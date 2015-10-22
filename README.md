@@ -17,6 +17,7 @@ private static final Logger LOG = Logger.getLogger(MyService.class);
 
 ## Persisting data
 @PersistenceContext
+
 javax.persistence.EntityManager
 
 @PersistenceContext
@@ -95,17 +96,4 @@ User Name:	sa
 Password:	sa
 </pre>
 
-Then you can see the tables:
-<pre>
--HIBERNATE_SEQUENCES 	(To generate PKs)
--TBL_DEPARTMENT 	
--TBL_EMPLOYEE 		(FK with TBL_DEPARTMENT)
-</pre>
-
-Artifact to avoid write dummy code:
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.6</version>
-		</dependency>
+Review how the information is being persisted
