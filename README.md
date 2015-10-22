@@ -20,15 +20,15 @@ private static final Logger LOG = Logger.getLogger(MyService.class);
 
 javax.persistence.EntityManager
 
-
+<code>
 @PersistenceContext
-
 private EntityManager em;
+</code>
 
-
-@PersistenceContext(unitName="NameOfPU")
-
+<code>
+@PersistenceContext(unitName="Name of persistence unit: DemoPU")
 private EntityManager em;
+</code>
 
 ## Basic methods
 em use object instances
