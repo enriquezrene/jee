@@ -1,14 +1,14 @@
 # JPA - concepts related to entity manager
 
 ## Dependencies added
-log4j 
-'''xml
+log4j
+```xml 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-'''
+```
 
 How to use the logger:
 <pre>
