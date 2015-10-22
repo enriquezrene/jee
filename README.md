@@ -20,15 +20,22 @@ private static final Logger LOG = Logger.getLogger(MyService.class);
 
 javax.persistence.EntityManager
 
+
 @PersistenceContext
+
 private EntityManager em;
 
+
 @PersistenceContext(unitName="NameOfPU")
+
 private EntityManager em;
 
 ## Basic methods
 em use object instances
+
+
 We will use a Department instance, because is an object :)
+
 Department extends java.lang.Object
 
 em.persist(department);
@@ -84,10 +91,14 @@ JBOSS_HOME: /path/to/jboss-as-7.1.1.Final/
 To visualize the tables, JBOSS_HOME/standalone/deployments has the h2console.war
 
 To run JBoss AS
+<pre>
 sh JBOSS_HOME/bin/standalone.sh
+</pre>
 
-login to database console:
+Login to database console:
+<pre>
 http://localhost:8080/h2console/
+</pre>
 
 <pre>
 Driver Class: 	org.h2.Driver
