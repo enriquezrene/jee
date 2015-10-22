@@ -16,19 +16,21 @@ private static final Logger LOG = Logger.getLogger(MyService.class);
 </pre>
 
 ## Persisting data
-@PersistenceContext
+####@PersistenceContext
 
-javax.persistence.EntityManager
+####javax.persistence.EntityManager
 
-<code>
-@PersistenceContext
-private EntityManager em;
-</code>
+<pre>
+	@PersistenceContext
+	private EntityManager em;
+</pre>
 
-<code>
-@PersistenceContext(unitName="Name of persistence unit: DemoPU")
-private EntityManager em;
-</code>
+
+If you have more than one persistence unit:
+<pre>
+	@PersistenceContext(unitName="Name of persistence unit: DemoPU")
+	private EntityManager em;
+</pre>
 
 ## Basic methods
 em use object instances
@@ -36,9 +38,11 @@ em use object instances
 
 We will use a Department instance, because is an object :)
 
-Department extends java.lang.Object
+<pre>
+	Department extends java.lang.Object
+</pre>
 
-em.persist(department);
+####em.persist(department);
 <pre>
 16:35:46,771 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
 16:35:46,772 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select tbl.next_val from hibernate_sequences tbl where tbl.sequence_name=? for update
@@ -46,14 +50,14 @@ em.persist(department);
 16:35:46,774 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: insert into tbl_department (dep_name, dep_id) values (?, ?)
 </pre>
 
-em.merge(department);
+####em.merge(department);
 <pre>
 16:35:10,907 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
 16:35:10,908 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_0_, department0_.dep_name as dep2_16_0_ from tbl_department department0_ where department0_.dep_id=?
 16:35:10,909 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: update tbl_department set dep_name=? where dep_id=?
 </pre>
 
-em.remove(department);
+####em.remove(department);
 <pre>
 16:36:29,787 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
 16:36:29,788 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_0_, department0_.dep_name as dep2_16_0_ from tbl_department department0_ where department0_.dep_id=?
@@ -61,7 +65,10 @@ em.remove(department);
 </pre>
 
 ## Query data
-em.createQuery("SELECT d FROM Department d")
+You have two main options to query data
+
+####em.createQuery("SELECT d FROM Department d")
+Using JPQL
 <pre>
 16:37:06,647 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_, department0_.dep_name as dep2_16_ from tbl_department department0_
 16:37:06,648 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
@@ -70,7 +77,8 @@ em.createQuery("SELECT d FROM Department d")
 16:37:06,649 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 5: technology
 </pre>
 
-em.createNativeQuery("select * from tbl_department")
+####em.createNativeQuery("select * from tbl_department")
+Using native queries
 <pre>
 16:37:06,649 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select * from tbl_department
 16:37:06,650 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
@@ -90,7 +98,7 @@ JBOSS_HOME: /path/to/jboss-as-7.1.1.Final/
 
 To visualize the tables, JBOSS_HOME/standalone/deployments has the h2console.war
 
-To run JBoss AS
+To run JBoss AS:
 <pre>
 sh JBOSS_HOME/bin/standalone.sh
 </pre>
