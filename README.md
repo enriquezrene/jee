@@ -67,8 +67,8 @@ We will use a Department instance, because is an object :)
 ## Query data
 You have two main options to query data
 
-####em.createQuery("SELECT d FROM Department d")
 Using JPQL
+####em.createQuery("SELECT d FROM Department d")
 <pre>
 16:37:06,647 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_, department0_.dep_name as dep2_16_ from tbl_department department0_
 16:37:06,648 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
@@ -77,8 +77,9 @@ Using JPQL
 16:37:06,649 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 5: technology
 </pre>
 
+
+Using native queries (plain sql)
 ####em.createNativeQuery("select * from tbl_department")
-Using native queries
 <pre>
 16:37:06,649 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select * from tbl_department
 16:37:06,650 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
@@ -95,8 +96,6 @@ cp ear/target/demo-ear.ear /path/to/jboss-as-7.1.1.Final/standalone/deployments/
 
 JBOSS_HOME: /path/to/jboss-as-7.1.1.Final/
 </pre>
-
-To visualize the tables, JBOSS_HOME/standalone/deployments has the h2console.war
 
 To run JBoss AS:
 <pre>
