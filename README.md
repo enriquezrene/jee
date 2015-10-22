@@ -2,12 +2,15 @@
 
 ## Dependencies added
 log4j 
+<pre>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+</pre>
 
+How to use the logger:
 <pre>
 private static final Logger LOG = Logger.getLogger(MyService.class);
 </pre>
