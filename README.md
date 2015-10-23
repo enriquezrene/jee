@@ -6,7 +6,7 @@ Mark the class as managed by the container:
 @ManagedBean
 </pre>
 
-## Scope annotation
+## Annotations for define the scope
 
 Demo page:
 <pre>
@@ -14,7 +14,7 @@ http://localhost:8080/demo-web/scopes.jsf
 </pre>
 
 
-@RequestScoped
+###@RequestScoped
 When you press the button, the info message should be printed
 
 <pre>
@@ -37,7 +37,7 @@ Output:
 09:07:10,752 INFO  [com.github.demo.scopes.RequestController] (http--127.0.0.1-8080-1) com.github.demo.scopes.RequestController...
 </pre>
 
-@ViewScoped
+###@ViewScoped
 When you press F5 button, and then press view button the info message should be printed only one time:
 
 <pre>
@@ -61,7 +61,7 @@ Output pressing the button n-times:
 NOTE: If you press the F5 button and then press view-button, only one time the message should be printed
 
 
-@SessionScoped
+###@SessionScoped
 When you open the browser, then press session-button, only one time the message should be printed
 
 <pre>
@@ -82,7 +82,7 @@ Output when you press button and refresh the page n-times:
 09:23:50,456 INFO  [com.github.demo.scopes.SessionController] (http--127.0.0.1-8080-1) com.github.demo.scopes.SessionController...
 </pre>
 
-@ApplicationScoped
+###@ApplicationScoped
 When you request the page in any browser and then press the button, the info message should be printed
 
 <pre>
@@ -106,14 +106,17 @@ Output:
 ## Binding
 Show and gather info from the web page:
 
+<pre>
 Show:   getters
 Gather: setters
+</pre>
 
 Demo page:
 <pre>
 http://localhost:8080/demo-web/getset.jsf
 </pre>
 
+Controller:
 <pre>
 @ManagedBean
 @RequestScoped
@@ -126,6 +129,11 @@ public class BindingController {
 
     public BindingController() {
         department = new Department();
+    }
+
+    public void ok() {
+        LOG.info("name: " + name);
+        LOG.info("Department values: " + department.getId() + "@" + department.getName());
     }
 
     public void setName(String name) {
@@ -148,7 +156,42 @@ public class BindingController {
         return this.department;
     }
 }
+</pre>
 
+JSF Page:
+<pre>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+
+</h:head>
+<h:body>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputText value="Name:" />
+			<h:inputText value="#{bindingController.name}"></h:inputText>
+			
+			<h:outputText value="Dep id:" />
+			<h:inputText value="#{bindingController.department.id}"></h:inputText>
+			<h:outputText value="Dep name:" />
+			<h:inputText value="#{bindingController.department.name}"></h:inputText>
+		</h:panelGrid>
+		<h:commandButton value="OK" action="#{bindingController.ok}" />
+	</h:form>
+</h:body>
+</html>
+</pre>
+
+Output
+<pre>
+09:40:38,342 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) get name
+09:40:38,344 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) get dep
+09:40:38,346 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) get dep
 </pre>
 
 ## Lifecycle

@@ -19,7 +19,7 @@ public class MyService {
         LOG.info("CREANDO INSTANCIA....");
     }
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "")
     private EntityManager em;
 
     public void save(Department department) {
@@ -47,5 +47,9 @@ public class MyService {
         for (Object[] array : departmentsArray) {
             LOG.info(array[0] + ": " + array[1]);
         }
+    }
+
+    public List<Department> listDepartments() {
+        return em.createQuery("SELECT d FROM Department d").getResultList();
     }
 }
