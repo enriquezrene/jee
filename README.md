@@ -194,94 +194,124 @@ Output
 09:40:38,346 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) get dep
 </pre>
 
-## Lifecycle
+Enter data in the form:
+http://localhost:8080/demo-web/getset.jsf
+<pre>
+Name:       value for name field
+Dep id:     123
+Dep name:   some dep name
+</pre>
 
-log4j
-```xml 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
+Then press submit button:
+<pre>
+15:22:22,746 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) name: value for name field
+15:22:22,747 INFO  [com.github.demo.binding.BindingController] (http--127.0.0.1-8080-1) Department values: 123@some dep name
+</pre>
+
+###EJB Integration
+
+InfoController
+<pre>
+
+</pre>
+
+###Dependency Injection
+
+Construct
+<pre>
+
+    @EJB
+    private MyService myService;
+    
+    public InfoController() {
+        LOG.info("INJECTED FIELD: " + myService);
+    }
+    
+    ...
+</pre>
+Output:
+<pre>
+15:27:00,566 INFO  [com.github.demo.ejbintegration.InfoController] (http--127.0.0.1-8080-1) INJECTED FIELD: null
+</pre>
+
+@PosContruct
+<pre>
+
+    @EJB
+    private MyService myService;
+    
+    ...
+    
+    @PostConstruct
+    public void ini() {
+        LOG.info("INJECTED FIELD: " + myService);
+        departments = myService.listDepartments();
+    }
+    
+    ...
+</pre>
+Output:
+<pre>
+15:27:00,567 INFO  [com.github.demo.ejbintegration.InfoController] (http--127.0.0.1-8080-1) INJECTED FIELD: Proxy for view class: com.github.demo.em.MyService of EJB: MyService
+15:27:00,629 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_25_, department0_.dep_name as dep2_25_ from tbl_department department0_
+</pre>
+
+###Binding components:
+
+###Get row from table:
+
+```xml
+<h:dataTable binding="#{infoController.table}"
+            value="#{infoController.departments}" var="item">
 ```
 
-How to use the logger:
 <pre>
-private static final Logger LOG = Logger.getLogger(MyService.class);
+    public void selectDepartment() {
+        Department department = (Department) table.getRowData();
+        LOG.info("selected-value: " + department.getId() + ": " + department.getName());
+    }
 </pre>
 
-## Persisting data
-####@PersistenceContext
-
-####javax.persistence.EntityManager
-
+Output:
 <pre>
-	@PersistenceContext
-	private EntityManager em;
+16:18:17,040 INFO  [com.github.demo.ejbintegration.InfoController] (http--127.0.0.1-8080-1) selected-value: 1: technology
 </pre>
 
 
-If you have more than one persistence unit:
-<pre>
-	@PersistenceContext(unitName="Name of persistence unit: DemoPU")
-	private EntityManager em;
-</pre>
+###Using "combo-box"
 
-## Basic methods
-em use object instances
+```xml
+        <h:selectOneMenu value="#{infoController.selectedItem}">
+            <f:selectItems value="#{infoController.departments}" var="item"
+                itemLabel="#{item.name}" itemValue="#{item.id}" />
+        </h:selectOneMenu>
 
+```
 
-We will use a Department instance, because is an object :)
+###Using data table
+```xml
+    <h:dataTable binding="#{infoController.table}"
+            value="#{infoController.departments}" var="item">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                        #{item.id}
+                        </h:column>
+			<h:column>
+				<f:facet name="header">Name</f:facet>
+    				#{item.name}
+   			</h:column>
+			<h:column>
+				<f:facet name="header">Name</f:facet>
+    				#{item.name}
+   			</h:column>
+			<h:column>
+				<f:facet name="header">seleccionar</f:facet>
+				<h:commandButton value="select"
+					action="#{infoController.selectDepartment}" />
+			</h:column>
+		</h:dataTable>
 
-<pre>
-	Department extends java.lang.Object
-</pre>
-
-####em.persist(department);
-<pre>
-16:35:46,771 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
-16:35:46,772 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select tbl.next_val from hibernate_sequences tbl where tbl.sequence_name=? for update
-16:35:46,773 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: update hibernate_sequences set next_val=?  where next_val=? and sequence_name=?
-16:35:46,774 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: insert into tbl_department (dep_name, dep_id) values (?, ?)
-</pre>
-
-####em.merge(department);
-<pre>
-16:35:10,907 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
-16:35:10,908 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_0_, department0_.dep_name as dep2_16_0_ from tbl_department department0_ where department0_.dep_id=?
-16:35:10,909 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: update tbl_department set dep_name=? where dep_id=?
-</pre>
-
-####em.remove(department);
-<pre>
-16:36:29,787 INFO  [com.github.demo.em.MyController] (http--127.0.0.1-8080-1) MyController is being created
-16:36:29,788 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_0_, department0_.dep_name as dep2_16_0_ from tbl_department department0_ where department0_.dep_id=?
-16:36:29,789 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: delete from tbl_department where dep_id=?
-</pre>
-
-## Query data
-You have two main options to query data
-
-Using JPQL
-####em.createQuery("SELECT d FROM Department d")
-<pre>
-16:37:06,647 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select department0_.dep_id as dep1_16_, department0_.dep_name as dep2_16_ from tbl_department department0_
-16:37:06,648 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
-16:37:06,648 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 2: technology
-16:37:06,648 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 4: technology
-16:37:06,649 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 5: technology
-</pre>
-
-
-Using native queries (plain sql)
-####em.createNativeQuery("select * from tbl_department")
-<pre>
-16:37:06,649 INFO  [stdout] (http--127.0.0.1-8080-1) Hibernate: select * from tbl_department
-16:37:06,650 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 1: accounting
-16:37:06,651 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 2: technology
-16:37:06,651 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 4: technology
-16:37:06,651 INFO  [com.github.demo.em.MyService] (http--127.0.0.1-8080-1) 5: technology
-</pre>
+Running the example:
 
 <pre>
 mvn clean
