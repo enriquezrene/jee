@@ -1,6 +1,158 @@
 # JPA - concepts related to entity manager
 
-## Dependencies added
+## Main annotation
+Mark the class as managed by the container:
+<pre>
+@ManagedBean
+</pre>
+
+## Scope annotation
+
+Demo page:
+<pre>
+http://localhost:8080/demo-web/scopes.jsf
+</pre>
+
+
+@RequestScoped
+When you press the button, the info message should be printed
+
+<pre>
+@ManagedBean
+@RequestScoped
+public class RequestController extends CommonController {
+
+    private static final Logger LOG = Logger.getLogger(RequestController.class);
+
+    public RequestController() {
+        LOG.info(RequestController.class.getName() + "...");
+    }
+}
+</pre>
+
+Output:
+<pre>
+09:07:00,015 INFO  [com.github.demo.scopes.RequestController] (http--127.0.0.1-8080-1) com.github.demo.scopes.RequestController...
+09:07:10,030 INFO  [com.github.demo.scopes.RequestController] (http--127.0.0.1-8080-1) com.github.demo.scopes.RequestController...
+09:07:10,752 INFO  [com.github.demo.scopes.RequestController] (http--127.0.0.1-8080-1) com.github.demo.scopes.RequestController...
+</pre>
+
+@ViewScoped
+When you press F5 button, and then press view button the info message should be printed only one time:
+
+<pre>
+@ViewScoped
+@ManagedBean
+public class ViewController extends CommonController {
+
+    private static final Logger LOG = Logger.getLogger(ViewController.class);
+
+    public ViewController() {
+        LOG.info(ViewController.class.getName() + "...");
+    }
+}
+</pre>
+
+Output pressing the button n-times:
+<pre>
+09:17:16,984 INFO  [com.github.demo.scopes.ViewController] (http--127.0.0.1-8080-1) com.github.demo.scopes.ViewController...
+</pre>
+
+NOTE: If you press the F5 button and then press view-button, only one time the message should be printed
+
+
+@SessionScoped
+When you open the browser, then press session-button, only one time the message should be printed
+
+<pre>
+@SessionScoped
+@ManagedBean
+public class SessionController extends CommonController {
+
+    private static final Logger LOG = Logger.getLogger(SessionController.class);
+
+    public SessionController() {
+        LOG.info(SessionController.class.getName() + "...");
+    }
+}
+</pre>
+
+Output when you press button and refresh the page n-times:
+<pre>
+09:23:50,456 INFO  [com.github.demo.scopes.SessionController] (http--127.0.0.1-8080-1) com.github.demo.scopes.SessionController...
+</pre>
+
+@ApplicationScoped
+When you request the page in any browser and then press the button, the info message should be printed
+
+<pre>
+@ApplicationScoped
+@ManagedBean
+public class ApplicationController extends CommonController {
+
+    private static final Logger LOG = Logger.getLogger(ApplicationController.class);
+
+    public ApplicationController() {
+        LOG.info(ApplicationController.class.getName() + "...");
+    }
+}
+</pre>
+
+Output:
+<pre>
+09:32:40,288 INFO  [com.github.demo.scopes.ApplicationController] (http--127.0.0.1-8080-1) com.github.demo.scopes.ApplicationController...
+</pre>
+
+## Binding
+Show and gather info from the web page:
+
+Show:   getters
+Gather: setters
+
+Demo page:
+<pre>
+http://localhost:8080/demo-web/getset.jsf
+</pre>
+
+<pre>
+@ManagedBean
+@RequestScoped
+public class BindingController {
+
+    private static final Logger LOG = Logger.getLogger(BindingController.class);
+
+    private String name;
+    private Department department;
+
+    public BindingController() {
+        department = new Department();
+    }
+
+    public void setName(String name) {
+        LOG.info("set name");
+        this.name = name;
+    }
+
+    public void setDepartment(Department department) {
+        LOG.info("set dep");
+        this.department = department;
+    }
+
+    public String getName() {
+        LOG.info("get name");
+        return this.name;
+    }
+
+    public Department getDepartment() {
+        LOG.info("get dep");
+        return this.department;
+    }
+}
+
+</pre>
+
+## Lifecycle
+
 log4j
 ```xml 
 		<dependency>
